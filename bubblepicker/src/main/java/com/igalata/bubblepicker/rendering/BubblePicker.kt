@@ -64,6 +64,8 @@ class BubblePicker : GLSurfaceView {
         }
 
     private val renderer = PickerRenderer(this)
+
+    var swipeMoveSpeed = 2f
     private var startX = 0f
     private var startY = 0f
     private var previousX = 0f
@@ -71,17 +73,17 @@ class BubblePicker : GLSurfaceView {
 
     private var longPressedFlag = false
     private val longPressedHandler = Handler()
-    private val longPressed = Runnable {
-        kotlin.run {
-            longPressedFlag = true;
-            onLongPress();
-        }
-    }
+    // private val longPressed = Runnable {
+    //     kotlin.run {
+    //         longPressedFlag = true;
+    //         onLongPress();
+    //     }
+    // }
     private val longPressedDuration: Long = 500
 
     private val gestureDetector = GestureDetector(context, object: GestureDetector.SimpleOnGestureListener() {
         override fun onLongPress(event: MotionEvent) {
-            renderer.remove(event.x, event.y)
+            // renderer.remove(event.x, event.y)
         }
 
         override fun onDown(event: MotionEvent): Boolean {
@@ -115,9 +117,10 @@ class BubblePicker : GLSurfaceView {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_MOVE -> {
-                longPressedHandler.removeCallbacks(longPressed);
+                // longPressedHandler.removeCallbacks(longPressed);
                 if (isSwipe(event)) {
-                    renderer.swipe(previousX - event.x, previousY - event.y)
+                    // renderer.swipe(previousX - event.x, previousY - event.y)
+                    renderer.swipe((previousX - event.x) * swipeMoveSpeed, (previousY - event.y) * swipeMoveSpeed)
                     previousX = event.x
                     previousY = event.y
                 } else {
@@ -136,9 +139,9 @@ class BubblePicker : GLSurfaceView {
         renderer.addItem(item);
     }
 
-    private fun onLongPress() {
-        print("LONG PRESS")
-    }
+    // private fun onLongPress() {
+    //     print("LONG PRESS")
+    // }
 
     private fun release() = postDelayed({ renderer.release() }, 0)
 
